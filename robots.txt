@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+Disallow: 
+Sitemap: https://pond-pastel.github.io/sitemap.xml
