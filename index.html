@@ -1,0 +1,909 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-2VL06GJZG4"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        const analyticsDisabled = localStorage.getItem("analytics-disabled");
+        if(!JSON.parse(analyticsDisabled)) {
+            gtag('js', new Date());
+
+            gtag('config', 'G-2VL06GJZG4');
+        }
+    </script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="My Goods Albumは、持っているグッズを記録・管理できるツールです。グッズの写真や情報を登録して、自分のコレクションを整理できます。">
+    <meta name="keywords" content="推し活,グッズ,管理,コレクション,My Goods Album">
+    <link rel="canonical" href="https://pond-pastel.github.io/my_goods_album/">
+    <!--ogp-->
+    <meta property="og:site_name" content="Pond Pastel">
+    <meta property="og:title" content="My Goods Album - 持っているグッズを管理">
+    <meta property="og:description" content="My Goods Albumは、持っているグッズを記録・管理できるツールです。グッズの写真や情報を登録して、自分のコレクションを整理できます。">
+    <meta property="og:url" content="https://pond-pastel.github.io/my_goods_album/">
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="https://pond-pastel.github.io/my_goods_album/image.png">
+    <!--/ogp-->
+    <!--twitter-->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@pond_pastel_dev">
+    <meta name="twitter:title" content="My Goods Album - 持っているグッズを管理">
+    <meta name="twitter:description" content="My Goods Albumは、持っているグッズを記録・管理できるツールです。グッズの写真や情報を登録して、自分のコレクションを整理できます。">
+    <meta name="twitter:image" content="https://pond-pastel.github.io/my_goods_album/image.png">
+    <!--/twitter-->
+    <meta name="robots" content="index, follow">
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "SoftwareApplication",
+        "name": "My Goods Album",
+        "url": "https://pond-pastel.github.io/my_goods_album/",
+        "applicationCategory": "LifestyleApplication",
+        "softwareVersion": "1.0.0",
+        "operatingSystem": "Web",
+        "description": "My Goods Albumは、持っているグッズを記録・管理できるツールです。グッズの写真や情報を登録して、自分のコレクションを整理できます。",
+        "author": {
+            "@type": "Person",
+            "name": "Pond Pastel"
+        },
+        "datePublished": "2026-09-26",
+        "dateModified": "2026-09-26",
+        "publisher": {
+            "@type": "Organization",
+            "name": "Pond Pastel",
+            "url": "https://pond-pastel.github.io/",
+            "logo": {
+                "@type": "ImageObject",
+                "url": "https://pond-pastel.github.io/logo.png"
+            }
+        },
+        "browserRequirements": "JavaScript enabled",
+        "inLanguage": "ja",
+        "isAccessibleForFree": true
+    }
+    </script>
+    <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            "itemListElement": [
+                {
+                    "@type": "ListItem",
+                    "position": 1,
+                    "name": "トップ",
+                    "item": "https://pond-pastel.github.io/"
+                },
+                {
+                    "@type": "ListItem",
+                    "position": 2,
+                    "name": "My Goods Album",
+                    "item": "https://pond-pastel.github.io/my_goods_album/"
+                }
+            ]
+        }
+    </script>
+    <title>My Goods Album - 持っているグッズを管理</title>
+    <link rel="icon" href="https://pond-pastel.github.io/favicon.ico" type="image/x-icon">
+    <!--iPhone PWA-->
+    <link rel="manifest" href="./manifest.webmanifest">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="theme-color" content="#ffc0cb">
+    <meta name="apple-mobile-web-app-title" content="My Goods Album">
+    <link rel="apple-touch-icon" href="./icon-192.png">
+    <!--/iPhone PWA-->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <script type="module" src="main.js"></script>
+    <h1 id="top">My Goods Album</h1>
+    <div>My Goods Albumへようこそ！このサイトでは持っているグッズの情報を写真付きで管理できます。（※ブラウザにデータが保存されます。）</div>
+    <noscript>
+        <div id="noscript-title">JavaScriptが無効になっています。</div>
+        <div>このサイトを表示するためにはブラウザの設定からJavaScriptを有効にしてください。</div>
+    </noscript>
+    <div id="blur">
+        <div id="popup"></div>
+    </div>
+    <div class="details" id="banner">
+        <div class="details-container">
+            <div class="details-content">
+                <div id="banner-content"></div>
+            </div>
+        </div>
+    </div>
+    <header>
+        <div class="button-group">
+            <button class="menu-button" id="add-new-folder-button">
+                <svg viewBox="0 0 16 16" width="16" height="16">
+                    <g class="text-svg" stroke="currentColor" stroke-width="1.2" fill="none">
+                        <path d="M 1 4 Q 1 1, 4 1 H 12 Q 15 1, 15 4 V 12 Q 15 15, 12 15 H 4 Q 1 15, 1 12 Z" />
+                        <path d="M 5 8 H 11 M 8 5 V 11" />
+                    </g>
+                </svg>
+                <span>アルバムを追加</span>
+            </button>
+            <button class="menu-button" id="add-new-goods-button">
+                <svg viewBox="0 0 16 16" width="16" height="16">
+                    <g class="text-svg" stroke="currentColor" stroke-width="1.2" fill="none">
+                        <path d="M 1 4 Q 1 1, 4 1 H 12 Q 15 1, 15 4 V 12 Q 15 15, 12 15 H 4 Q 1 15, 1 12 Z" />
+                        <path d="M 5 8 H 11 M 8 5 V 11" />
+                    </g>
+                </svg>
+                <span>グッズを追加</span>
+            </button>
+        </div>
+    </header>
+    <div class="details" id="details-menu-bg">
+        <div class="details-container">
+            <div class="details-content">
+                <div id="details-menu">
+                    <div id="jump-button-list">
+                        <button class="jump-button details-menu-button" id="top-jump-button" data-jump-point="top">TOP</button>
+                        <button class="jump-button details-menu-button" id="folder-jump-button" data-jump-point="folder-goods-box">My Collections</button>
+                        <button class="jump-button details-menu-button" data-jump-point="settings">Settings</button>
+                        <button class="jump-button details-menu-button" data-jump-point="q-and-a-box">Q&A</button>
+                        <button class="jump-button details-menu-button" data-jump-point="ver-history-box">バージョン履歴</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <button class="details-button details-menu-button" id="details-menu-button" data-target="details-menu-bg" aria-label="メニューを開く" title="メニューを開く">
+        <svg class="penlight-svg" viewBox="0 0 16 32" width="24" height="48">
+            <g class="penlight-color-svg" style="fill: #e5a;" fill="currentColor">
+                <rect x="6" y="4" width="4" height="16" />
+            </g>
+            <g class="penlight-handle-svg" fill="currentColor">
+                <rect x="5.95" y="20" width="4.1" height="10" />
+            </g>
+        </svg>
+        <svg class="penlight-svg" viewBox="0 0 16 32" width="24" height="48">
+            <g class="penlight-color-svg" style="fill: #e5a;" fill="currentColor">
+                <rect x="6" y="4" width="4" height="16" />
+            </g>
+            <g class="penlight-handle-svg" fill="currentColor">
+                <rect x="5.95" y="20" width="4.1" height="10" />
+            </g>
+        </svg>
+    </button>
+    <div class="box" id="folder-goods-box">
+        <div class="loading-message" id="item-loading-message">
+            <span>Loading</span>
+            <svg class="loading-mark" viewBox="0 0 32 32" width="32" height="32">
+                <defs>
+                    <linearGradient id="loading-gradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                        <stop class="text-svg" offset="0%" stop-color="currentColor" stop-opacity="1" />
+                        <stop class="text-svg" offset="100%" stop-color="currentColor" stop-opacity="0.3" />
+                    </linearGradient>
+                </defs>
+                <circle cx="16" cy="16" r="10" id="item-loading-mark" fill="none" stroke="url(#loading-gradient)" stroke-width="4" stroke-linecap="round" stroke-dasharray="40" stroke-dashoffset="0" />
+            </svg>
+        </div>
+        <div class="error-message" id="item-loading-error-message">データの読み込みに失敗しました。</div>
+        <div id="folder-goods-group" style="display: none;">
+            <h2 id="folder-name">My Collections</h2>
+            <div id="folder-action-group" style="display: none;">
+                <button id="delete-folder-button">このアルバムを削除</button>
+                <button id="edit-folder-button">このアルバムを編集</button>
+            </div>
+            <div id="display-mode-group">
+                <span>表示方式: </span>
+                <select id="display-mode-select">
+                    <option value="list" selected>リスト表示</option>
+                    <option value="grid">グリッド表示</option>
+                </select>
+            </div>
+            <div id="page-history-group" style="display: none;">
+                <div id="page-history-button-group"></div>
+                <div class="page-back-button-group">
+                    <button class="back-button" id="page-back-button">
+                        <svg class="text-svg page-back-svg" viewBox="0 0 16 16" width="16" height="16">
+                            <g class="text-svg" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M 10 2 L 6 8 L 10 14" />
+                            </g>
+                        </svg>
+                        <span>Back</span>
+                    </button>
+                </div>
+            </div>
+            <div class="error-message" id="no-items-message">データがありません。</div>
+            <div id="folder-list"></div>
+            <div id="goods-list"></div>
+        </div>
+    </div>
+    <div class="box" id="settings">
+        <h2>Settings</h2>
+        <div>
+            <h3>基本設定</h3>
+            <div class="box settings-box">
+                <div class="settings-checkbox-group">
+                    <label>
+                        <input type="checkbox" class="settings-checkbox" id="no-folder-color">
+                        <span>アルバムのテーマカラーを使用しない</span>
+                    </label>
+                    <br>
+                    <span class="mini-description animation-reduce-description" style="display: none;">
+                        *端末の「動きを減らす」設定がオンになっている場合、この項目はオンになります。
+                        <br>
+                    </span>
+                    <span class="mini-description">アルバムなどの背景色がデフォルトのものになります。また、オフの場合でもアルバムの個別設定でテーマカラーを使用しない設定になっている場合はテーマカラーが適用されません。</span>
+                </div>
+                <div class="settings-checkbox-group">
+                    <label>
+                        <input type="checkbox" class="settings-checkbox" id="privacy-protection">
+                        <span>画像を表示しない</span>
+                    </label>
+                    <br>
+                    <span class="mini-description">追加、編集画面では確認のため画像が表示されます。</span>
+                </div>
+                <div class="settings-checkbox-group">
+                    <label>
+                        <input type="checkbox" class="settings-checkbox" id="calculation-for-deletion">
+                        <span>アルバム、グッズの削除前に計算問題を解く</span>
+                    </label>
+                    <br>
+                    <span class="mini-description">この設定をオンにすると、アルバムやグッズを削除する際に簡単な計算問題に正解しなければならなくなります。</span>
+                </div>
+            </div>
+        </div>
+        <div>
+            <h3>外観モード</h3>
+            <div id="appearance-mode-button-group">
+                <button class="appearance-mode-button" id="light-mode" data-target="light-mode-radio" title="ライトモード">
+                    <input type="radio" name="appearance-mode" id="light-mode-radio">
+                    <svg width="100px" height="100px" viewBox="0 0 100 100" class="appearance-mode-svg" id="light-svg">
+                        <g class="light-svg-g" fill="currentColor">
+                            <path class="appearance-check-svg" d="M 40 10 H 60 L 50 20 Z" />
+                            <circle class="light-mark" cx="50" cy="50" r="20" />
+                        </g>
+                        <text class="light-svg-text appearance-text" fill="currentColor" x="14" y="90">ライトモード</text>
+                    </svg>
+                </button>
+                <button class="appearance-mode-button" id="dark-mode" data-target="dark-mode-radio" title="ダークモード">
+                    <input type="radio" name="appearance-mode" id="dark-mode-radio">
+                    <svg width="100px" height="100px" viewBox="0 0 100 100" class="appearance-mode-svg" id="dark-svg">
+                        <g class="dark-svg-g" fill="currentColor">
+                            <path class="appearance-check-svg" d="M 40 10 H 60 L 50 20 Z" />
+                            <path class="dark-mark" d="M 30 50 A 10 10 0 0 0 50 30 A 20 20 0 0 1 50 70 A 20 20 0 0 1 30 50 Z" />
+                        </g>
+                        <text class="dark-svg-text appearance-text" fill="currentColor" x="14" y="90">ダークモード</text>
+                    </svg>
+                </button>
+                <button class="appearance-mode-button" id="system-mode" data-target="system-mode-radio" title="システム">
+                    <input type="radio" name="appearance-mode" id="system-mode-radio" checked>
+                    <svg width="100px" height="100px" viewBox="0 0 100 100" class="appearance-mode-svg" id="system-svg">
+                        <g class="system-svg-g" fill="currentColor">
+                            <path class="appearance-check-svg" d="M 40 10 H 60 L 50 20 Z" />
+                            <path class="system-mark" d="M 50 30 A 20 20 0 0 1 50 70 A 20 20 0 0 1 30 50 A 20 20 0 0 0 50 50 Z" />
+                        </g>
+                        <text class="system-svg-text appearance-text" x="26" y="90">システム</text>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="box" id="q-and-a-box">
+        <h2>Q&A</h2>
+        <div id="q-and-a-group">
+            <div class="details q-and-a-group" id="q-and-a-category-box">
+                <button class="details-button q-and-a-button" data-target="q-and-a-category-box">
+                    <span id="q-and-a-category-button">表示するQ&Aのカテゴリを絞り込む</span>
+                    <svg class="details-arrow" viewBox="0 0 32 32" width="32" height="32" aria-hidden="true">
+                        <g class="text-svg" stroke="currentColor" stroke-width="2" fill="none">
+                            <path d="M 10 4 L 22 16 L 10 28" />
+                        </g>
+                    </svg>
+                </button>
+                <div class="details-container">
+                    <div class="details-content">
+                        <div id="q-and-a-checkbox-group">
+                            <div>チェックが入っているカテゴリのQ&Aが表示されます。</div>
+                            <div>
+                                <div>
+                                    <label>
+                                        <input type="checkbox" class="q-and-a-category-checkbox" id="qa-c-how-to-use" checked>
+                                        <span>使い方・仕様</span>
+                                    </label>
+                                </div>
+                                <div>
+                                    <label>
+                                        <input type="checkbox" class="q-and-a-category-checkbox" id="qa-c-settings" checked>
+                                        <span>設定</span>
+                                    </label>
+                                </div>
+                                <div>
+                                    <label>
+                                        <input type="checkbox" class="q-and-a-category-checkbox" id="qa-c-accessibility" checked>
+                                        <span>アクセシビリティ</span>
+                                    </label>
+                                </div>
+                                <div>
+                                    <label>
+                                        <input type="checkbox" class="q-and-a-category-checkbox" id="qa-c-other" checked>
+                                        <span>その他</span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="details q-and-a-group open qa-c-how-to-use" id="qa-how-to-read-the-qa">
+                <button class="details-button q-and-a-button" data-target="qa-how-to-read-the-qa">
+                    <span class="q-and-a-question">Q&Aの見方を教えてください。</span>
+                    <svg class="details-arrow" viewBox="0 0 16 16" width="16" height="16" aria-hidden="true">
+                        <g class="text-svg" stroke="currentColor" stroke-width="2" fill="none">
+                            <path d="M 5 2 L 11 8 L 5 14" />
+                        </g>
+                    </svg>
+                </button>
+                <div class="details-container">
+                    <div class="details-content">
+                        <div class="q-and-a-answer">
+                            <p>
+                                気になるQ&Aを見つけたらクエスチョン部分(Q. 〇〇)をクリックまたはタップしてください。開いた状態でクリックまたはタップするとそのQ&Aが閉じます。
+                            </p>
+                            <p>
+                                上の「表示するQ&Aのカテゴリを絞り込む」から表示するQ&Aをカテゴリごとに絞り込むこともできます。
+                            </p>
+                            <p>
+                                右下に「掲載: Ver.x.x.x」や「更新: Ver.x.x.x」、「確認: Ver.x.x.x」と表示されている場合、掲載や更新、確認されたバージョンを指します。「更新」は最後に更新したバージョンを指し、「確認」はアップデート後にQ&Aの内容に間違いがないか最後に確認したバージョンを指します。
+                                <br>
+                                「更新」、「確認」は記載しない場合がありますが、その場合は掲載バージョンと同じです。
+                                <br>
+                                「確認」のバージョンが最新バージョンと異なる場合、最新バージョンでの更新内容がQ&Aに反映されていない可能性があります。
+                            </p>
+                            <div class="ver-of-publication">Ver.1.0.0</div>
+                            <!--<div class="last-updated-ver">Ver.1.0.0</div>
+                            <div class="verified-ver">Ver.1.0.0</div>-->
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="details q-and-a-group qa-c-other" id="qa-usage-fees">
+                <button class="details-button q-and-a-button" data-target="qa-usage-fees">
+                    <span class="q-and-a-question">無料で利用できますか？</span>
+                    <svg class="details-arrow" viewBox="0 0 16 16" width="16" height="16" aria-hidden="true">
+                        <g class="text-svg" stroke="currentColor" stroke-width="2" fill="none">
+                            <path d="M 5 2 L 11 8 L 5 14" />
+                        </g>
+                    </svg>
+                </button>
+                <div class="details-container">
+                    <div class="details-content">
+                        <div class="q-and-a-answer">
+                            <p>
+                                全ての機能を無料で利用していただけます。
+                            </p>
+                            <div class="ver-of-publication">Ver.1.0.0</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="details q-and-a-group qa-c-how-to-use" id="qa-add-album">
+                <button class="details-button q-and-a-button" data-target="qa-add-album">
+                    <span class="q-and-a-question">アルバムの作り方を教えてください。</span>
+                    <svg class="details-arrow" viewBox="0 0 16 16" width="16" height="16" aria-hidden="true">
+                        <g class="text-svg" stroke="currentColor" stroke-width="2" fill="none">
+                            <path d="M 5 2 L 11 8 L 5 14" />
+                        </g>
+                    </svg>
+                </button>
+                <div class="details-container">
+                    <div class="details-content">
+                        <div class="q-and-a-answer">
+                            <p>
+                                画面上部左の「アルバムを追加」ボタンをクリックまたはタップして、情報を入力し「追加」ボタンをクリックまたはタップしてください（アルバム名は必須で、その他の項目は任意です）。
+                                <br>
+                                アルバムは追加時に開かれていたアルバムに追加されます。
+                            </p>
+                            <div class="ver-of-publication">Ver.1.0.0</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="details q-and-a-group qa-c-how-to-use" id="qa-add-goods">
+                <button class="details-button q-and-a-button" data-target="qa-add-goods">
+                    <span class="q-and-a-question">グッズの登録方法を教えてください。</span>
+                    <svg class="details-arrow" viewBox="0 0 16 16" width="16" height="16" aria-hidden="true">
+                        <g class="text-svg" stroke="currentColor" stroke-width="2" fill="none">
+                            <path d="M 5 2 L 11 8 L 5 14" />
+                        </g>
+                    </svg>
+                </button>
+                <div class="details-container">
+                    <div class="details-content">
+                        <div class="q-and-a-answer">
+                            <p>
+                                画面上部右の「グッズを追加」ボタンをクリックまたはタップして、情報を入力し「追加」ボタンをクリックまたはタップしてください（グッズ名は必須で、その他の項目は任意です）。
+                                <br>
+                                グッズの追加先は「追加するアルバムを選択」で選択してください。
+                            </p>
+                            <div class="ver-of-publication">Ver.1.0.0</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="details q-and-a-group qa-c-how-to-use" id="qa-folder-edit">
+                <button class="details-button q-and-a-button" data-target="qa-folder-edit">
+                    <span class="q-and-a-question">アルバムの編集方法を教えてください。</span>
+                    <svg class="details-arrow" viewBox="0 0 16 16" width="16" height="16" aria-hidden="true">
+                        <g class="text-svg" stroke="currentColor" stroke-width="2" fill="none">
+                            <path d="M 5 2 L 11 8 L 5 14" />
+                        </g>
+                    </svg>
+                </button>
+                <div class="details-container">
+                    <div class="details-content">
+                        <div class="q-and-a-answer">
+                            <p>
+                                編集したいアルバムを開き、「このアルバムを編集」ボタンをクリックまたはタップしてください。
+                            </p>
+                            <div class="ver-of-publication">Ver.1.0.0</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="details q-and-a-group qa-c-how-to-use" id="qa-goods-edit">
+                <button class="details-button q-and-a-button" data-target="qa-goods-edit">
+                    <span class="q-and-a-question">グッズの編集方法を教えてください。</span>
+                    <svg class="details-arrow" viewBox="0 0 16 16" width="16" height="16" aria-hidden="true">
+                        <g class="text-svg" stroke="currentColor" stroke-width="2" fill="none">
+                            <path d="M 5 2 L 11 8 L 5 14" />
+                        </g>
+                    </svg>
+                </button>
+                <div class="details-container">
+                    <div class="details-content">
+                        <div class="q-and-a-answer">
+                            <p>
+                                編集したいグッズを一覧から選び、「このグッズを編集」ボタンをクリックまたはタップしてください。
+                            </p>
+                            <div class="ver-of-publication">Ver.1.0.0</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="details q-and-a-group qa-c-how-to-use" id="qa-list-grid-display">
+                <button class="details-button q-and-a-button" data-target="qa-list-grid-display">
+                    <span class="q-and-a-question">リスト表示とグリッド表示の違いを教えてください。</span>
+                    <svg class="details-arrow" viewBox="0 0 16 16" width="16" height="16" aria-hidden="true">
+                        <g class="text-svg" stroke="currentColor" stroke-width="2" fill="none">
+                            <path d="M 5 2 L 11 8 L 5 14" />
+                        </g>
+                    </svg>
+                </button>
+                <div class="details-container">
+                    <div class="details-content">
+                        <div class="q-and-a-answer">
+                            <ul>
+                                <li>
+                                    リスト表示: 1行につき1つまでアルバム、グッズが表示されます。
+                                </li>
+                                <li>
+                                    グリッド表示: 画面の横幅によりアルバム、グッズが表示される数が以下のように変化します。
+                                    <ul>
+                                        <li>
+                                            600ピクセル以下: 1行につき2つまで
+                                        </li>
+                                        <li>
+                                            601〜899ピクセル: 1行につき3つまで
+                                        </li>
+                                        <li>
+                                            900〜1200ピクセル: 1行につき4つまで
+                                        </li>
+                                        <li>
+                                            1201ピクセル以上: 1行につき5つまで
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+                            <div class="ver-of-publication">Ver.1.0.0</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="details q-and-a-group qa-c-how-to-use" id="qa-category-unknown">
+                <button class="details-button q-and-a-button" data-target="qa-category-unknown">
+                    <span class="q-and-a-question">「カテゴリ: 不明」とはどのような意味ですか？</span>
+                    <svg class="details-arrow" viewBox="0 0 16 16" width="16" height="16" aria-hidden="true">
+                        <g class="text-svg" stroke="currentColor" stroke-width="2" fill="none">
+                            <path d="M 5 2 L 11 8 L 5 14" />
+                        </g>
+                    </svg>
+                </button>
+                <div class="details-container">
+                    <div class="details-content">
+                        <div class="q-and-a-answer">
+                            <p>
+                                カテゴリが登録されていない<!--、または廃止されたカテゴリが設定されている-->という意味です。
+                            </p>
+                            <div class="ver-of-publication">Ver.1.0.0</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="details q-and-a-group qa-c-how-to-use" id="qa-handling-of-data">
+                <button class="details-button q-and-a-button" data-target="qa-handling-of-data">
+                    <span class="q-and-a-question">データの取り扱いについて教えてください。</span>
+                    <svg class="details-arrow" viewBox="0 0 16 16" width="16" height="16" aria-hidden="true">
+                        <g class="text-svg" stroke="currentColor" stroke-width="2" fill="none">
+                            <path d="M 5 2 L 11 8 L 5 14" />
+                        </g>
+                    </svg>
+                </button>
+                <div class="details-container">
+                    <div class="details-content">
+                        <div class="q-and-a-answer">
+                            <p>
+                                登録したアルバム、グッズの情報や画像は外部サーバーへ送信されず、ブラウザ内に保存されます。
+                                <br>
+                                保存されたデータは通常、保存したブラウザ上でのみ閲覧できます。
+                            </p>
+                            <p>
+                                保存にはIndexedDB（ブラウザにデータを保存する仕組み）を使用しています。
+                            </p>
+                            <p>
+                                ブラウザにのみデータを保存しているため、ブラウザの設定などからデータを削除した場合やブラウザによってデータが削除された場合、データが失われます。
+                            </p>
+                            <p>
+                                一部のデータを削除したい場合は以下の手順で削除してください。
+                            </p>
+                            <ul>
+                                <li>
+                                    アルバムを削除する場合: 削除したいアルバムを開き「このアルバムを削除」ボタンをクリックまたはタップし、確認画面で「削除」ボタンをクリックまたはタップしてください。
+                                </li>
+                                <li>
+                                    グッズを削除する場合: 削除したいグッズの詳細画面を開き「このグッズを削除」ボタンをクリックまたはタップし、確認画面で「削除」ボタンをクリックまたはタップしてください。
+                                </li>
+                            </ul>
+                            <div class="ver-of-publication">Ver.1.0.0</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="details q-and-a-group qa-c-settings" id="qa-recommended-settings">
+                <button class="details-button q-and-a-button" data-target="qa-recommended-settings">
+                    <span class="q-and-a-question">基本設定でのおすすめ設定を教えてください。</span>
+                    <svg class="details-arrow" viewBox="0 0 16 16" width="16" height="16" aria-hidden="true">
+                        <g class="text-svg" stroke="currentColor" stroke-width="2" fill="none">
+                            <path d="M 5 2 L 11 8 L 5 14" />
+                        </g>
+                    </svg>
+                </button>
+                <div class="details-container">
+                    <div class="details-content">
+                        <div class="q-and-a-answer">
+                            <ul>
+                                <li>
+                                    アルバムのテーマカラーを使用しない: 落ち着いた画面にしたい方はオン、色が変わるのを楽しみたい方はオフにするのがおすすめです（この設定に関わらずアルバムの個別設定で色が変わらない設定にしている場合はそのアルバムでは色は変わりません）。
+                                    <br>
+                                    アニメーションを完全に止めたい場合は端末の「動きを減らす」設定をオンにしてください。
+                                </li>
+                                <li>
+                                    画像を表示しない: SNSなどに画面を共有する際に登録した画像を表示したくない方はオン、そうでない方はオフがおすすめです（オンにしても追加画面や編集画面では表示されます）。
+                                </li>
+                                <li>
+                                    アルバム、グッズの削除前に計算問題を解く: 誤ってアルバム、グッズを削除したくない方はオン、削除前の計算が面倒な方はオフがおすすめです。
+                                </li>
+                            </ul>
+                            <div class="ver-of-publication">Ver.1.0.0</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="details q-and-a-group qa-c-settings" id="qa-delete-after-calculation">
+                <button class="details-button q-and-a-button" data-target="qa-delete-after-calculation">
+                    <span class="q-and-a-question">「アルバム、グッズの削除前に計算問題を解く」に記載されている簡単な計算問題というのはどのようなものですか？</span>
+                    <svg class="details-arrow" viewBox="0 0 16 16" width="16" height="16" aria-hidden="true">
+                        <g class="text-svg" stroke="currentColor" stroke-width="2" fill="none">
+                            <path d="M 5 2 L 11 8 L 5 14" />
+                        </g>
+                    </svg>
+                </button>
+                <div class="details-container">
+                    <div class="details-content">
+                        <div class="q-and-a-answer">
+                            <p>
+                                (1~9)×(1~9)の掛け算です。
+                            </p>
+                            <div class="ver-of-publication">Ver.1.0.0</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="details q-and-a-group qa-c-other" id="qa-jump-menu-button">
+                <button class="details-button q-and-a-button" data-target="qa-jump-menu-button">
+                    <span class="q-and-a-question">右上にあるものは何ですか？</span>
+                    <svg class="details-arrow" viewBox="0 0 16 16" width="16" height="16" aria-hidden="true">
+                        <g class="text-svg" stroke="currentColor" stroke-width="2" fill="none">
+                            <path d="M 5 2 L 11 8 L 5 14" />
+                        </g>
+                    </svg>
+                </button>
+                <div class="details-container">
+                    <div class="details-content">
+                        <div class="q-and-a-answer">
+                            <p>
+                                ペンライトをイメージしたメニューボタンです。メニューボタンをクリックまたはタップし、見たい項目をクリックまたはタップするとその項目まで自動でスクロールします。
+                            </p>
+                            <div class="ver-of-publication">Ver.1.0.0</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="details q-and-a-group qa-c-accessibility" id="qa-animation">
+                <button class="details-button q-and-a-button" data-target="qa-animation">
+                    <span class="q-and-a-question">アニメーションを無効にすることはできますか？</span>
+                    <svg class="details-arrow" viewBox="0 0 16 16" width="16" height="16" aria-hidden="true">
+                        <g class="text-svg" stroke="currentColor" stroke-width="2" fill="none">
+                            <path d="M 5 2 L 11 8 L 5 14" />
+                        </g>
+                    </svg>
+                </button>
+                <div class="details-container">
+                    <div class="details-content">
+                        <div class="q-and-a-answer">
+                            <p>
+                                ご利用の端末の「動きを減らす」設定をオンにすることでアニメーションを無効にできます（点滅防止のためテーマカラーの適用も無効になります）。
+                                <br>
+                                名称、設定方法は端末やOSにより異なります。
+                            </p>
+                            <div class="ver-of-publication">Ver.1.0.0</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="details q-and-a-group qa-c-accessibility" id="qa-init-disable-appearance-mode">
+                <button class="details-button q-and-a-button" data-target="qa-init-disable-appearance-mode">
+                    <span class="q-and-a-question">ページを再読み込みした際に前回使用していた外観モードが適用されないのはなぜですか？</span>
+                    <svg class="details-arrow" viewBox="0 0 16 16" width="16" height="16" aria-hidden="true">
+                        <g class="text-svg" stroke="currentColor" stroke-width="2" fill="none">
+                            <path d="M 5 2 L 11 8 L 5 14" />
+                        </g>
+                    </svg>
+                </button>
+                <div class="details-container">
+                    <div class="details-content">
+                        <div class="q-and-a-answer">
+                            <p>
+                                端末の「動きを減らす」設定がオンになっているためです。
+                                <br>
+                                この設定がオンの場合、点滅防止のためにアクセス時に適用される外観モードがシステムと同じ外観モードになります。
+                                <br>
+                                システムとは違う外観モードを設定したい場合は再度設定してください（端末の「動きを減らす」設定をオフにする必要はありません）。
+                            </p>
+                            <div class="ver-of-publication">Ver.1.0.0</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="details q-and-a-group qa-c-other" id="qa-inquiry">
+                <button class="details-button q-and-a-button" data-target="qa-inquiry">
+                    <span class="q-and-a-question">問い合わせ先を教えてください。</span>
+                    <svg class="details-arrow" viewBox="0 0 16 16" width="16" height="16" aria-hidden="true">
+                        <g class="text-svg" stroke="currentColor" stroke-width="2" fill="none">
+                            <path d="M 5 2 L 11 8 L 5 14" />
+                        </g>
+                    </svg>
+                </button>
+                <div class="details-container">
+                    <div class="details-content">
+                        <div class="q-and-a-answer">
+                            <p>
+                                以下のXアカウントまでお問い合わせください。
+                                <br>
+                                新機能のご要望や不具合報告、その他のお問い合わせなどを受け付けています。
+                                <br>
+                                回答まで時間がかかる場合があります。また、全てにお答えできるわけではありません。
+                            </p>
+                            <p>
+                                <a class="external-link-a" href="https://x.com/pond_pastel_dev" title="X: @pond_pastel_dev" target="_blank" rel="nofollow noopener noreferrer">
+                                    <span >X: @pond_pastel_dev</span>
+                                    <svg viewBox="0 0 16 16" width="16" height="16">
+                                        <title>外部リンクが開きます。</title>
+                                        <g class="external-link-svg" fill="none" stroke="currentColor" stroke-width="1.2">
+                                            <path d="M 8 3 H 13 V 8 M 13 3 L 7 9 M 8 5.5 H 4 Q 2 5.5, 2 7.5 V 11.5 Q 2 13.5, 4 13.5 H 8.5 Q 10.5 13.5, 10.5 11.5 V 7.5" />
+                                        </g>
+                                    </svg>
+                                </a>
+                            </p>
+                            <div class="ver-of-publication">Ver.1.0.0</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="box" id="ver-history-box">
+        <h2>バージョン履歴</h2>
+        <div id="ver-history-group">
+            <div class="details ver-history-group open" id="v-1-0-0">
+                <button class="details-button ver-history-button" data-target="v-1-0-0">
+                    <span>Ver.1.0.0</span>
+                    <svg class="details-arrow" viewBox="0 0 16 16" width="16" height="16" aria-hidden="true">
+                        <g class="text-svg" stroke="currentColor" stroke-width="2" fill="none">
+                            <path d="M 5 2 L 11 8 L 5 14" />
+                        </g>
+                    </svg>
+                </button>
+                <div class="details-container">
+                    <div class="details-content">
+                        <div class="ver-history-content">
+                            <p>
+                                サイトを公開しました。
+                            </p>
+                            <div class="ver-public-date">
+                                <time datetime="2026-09-26">2026年9月26日</time>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--<div class="box" style="display: none;">
+        <h2>テスト用ボタン</h2>
+        <button class="test" id="test-show-banner-button">Show Banner</button>
+        <button class="test" id="test-show-popup-button">Show Popup</button>
+        <h2>テスト用svg</h2>
+        <div>
+            <button class="goods-button">
+                <svg class="goods-symbol-svg" viewBox="0 0 100 100">
+                    <g class="symbol-svg" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="27" y="20" width="46" height="60" />
+                    </g>
+                    <g class="fill-symbol-svg" fill="currentColor">
+                        <rect x="27" y="70" width="46" height="10" />
+                        <path d="M 30 68 A 1 1 0 0 1 70 68 Z" />
+                        <circle cx="50" cy="35" r="10" />
+                    </g>
+                </svg>
+                <span class="overview-group">
+                    <span class="goods-title">写真アイコン</span>
+                    <span class="overview">説明</span>
+                </span>
+            </button>
+        </div>
+        <div>
+            <button class="goods-button">
+                <svg class="goods-symbol-svg" viewBox="0 0 100 100">
+                    <g class="symbol-svg" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M 42.5 80 Q 40 80, 40 77.5 V 65 Q 40 62.5, 37.5 62.5 Q 35 62.5, 35 60 V 42.5 Q 35 40, 37.5 40 H 62.5 Q 65 40, 65 42.5 V 60 Q 65 62.5, 62.5 62.5 Q 60 62.5, 60 65 V 77.5 Q 60 80, 57.5 80 Z" />
+                        <circle cx="50" cy="30" r="7" />
+                    </g>
+                    <g class="fill-symbol-svg" fill="currentColor">
+                        <path d="M 30 80 A 4 1 0 0 1 70 80 A 4 1 0 0 1 30 80 Z" />
+                    </g>
+                </svg>
+                <span class="overview-group">
+                    <span class="goods-title">アクスタアイコン</span>
+                </span>
+            </button>
+        </div>
+        <div>
+            <button class="goods-button">
+                <svg class="goods-symbol-svg" viewBox="0 0 100 100">
+                    <g class="symbol-svg" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M 30 40 C 10 10, 90 10, 70 40 Q 50 70, 30 40 M 47 55 V 75 A 1 1 0 0 0 53 75 V 55" />
+                    </g>
+                    <g class="fill-symbol-svg" fill="currentColor">
+                        <path d="M 50 50 L 40 40 A 1 1 0 0 1 50 30 A 1 1 0 0 1 60 40 Z" />
+                    </g>
+                </svg>
+                <span class="overview-group">
+                    <span class="goods-title">うちわアイコン</span>
+                </span>
+            </button>
+        </div>
+        <div>
+            <button class="goods-button">
+                <svg class="goods-symbol-svg" viewBox="0 0 100 100">
+                    <g class="symbol-svg" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M 47.5 35 V 15 A 1 1 0 0 1 52.5 15 V 35 A 1 1 0 0 1 47.5 35 Z M 50 85 L 30 65 A 1 1 0 0 1 50 45 A 1 1 0 0 1 70 65 Z" />
+                        <circle cx="50" cy="39" r="4" />
+                    </g>
+                </svg>
+                <span class="overview-group">
+                    <span class="goods-title">キーホルダーアイコン</span>
+                </span>
+            </button>
+        </div>
+        <div>
+            <button class="goods-button">
+                <svg class="goods-symbol-svg" viewBox="0 0 100 100">
+                    <g class="symbol-svg" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="45" y="10" width="10" height="50" />
+                        <path d="M 40 25 L 30 15 M 40 35 H 25 M 40 45 L 30 55 M 60 25 L 70 15 M 60 35 H 75 M 60 45 L 70 55" />
+                    </g>
+                    <g class="fill-symbol-svg" fill="currentColor">
+                        <rect x="43.5" y="60" width="13" height="30" />
+                    </g>
+                </svg>
+                <span class="overview-group">
+                    <span class="goods-title">ペンライトアイコン</span>
+                </span>
+            </button>
+        </div>
+        <div>
+            <button class="goods-button">
+                <svg class="goods-symbol-svg" viewBox="0 0 100 100">
+                    <g class="symbol-svg" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M 25 25 L 85 45 L 75 75 L 15 55 Z" />
+                    </g>
+                    <g class="fill-symbol-svg" fill="currentColor">
+                        <path d="M 33 61 A 1 1 0 0 1 57 69 Z M 15 55 L 25 25 L 31 27 L 21 57 Z M 85 45 L 75 75 L 69 73 L 79 43 Z" />
+                        <circle cx="52" cy="44" r="6" />
+                    </g>
+                </svg>
+                <span class="overview-group">
+                    <span class="goods-title">タオルアイコン</span>
+                </span>
+            </button>
+        </div>
+        <div>
+            <button class="goods-button">
+                <svg class="goods-symbol-svg" viewBox="0 0 100 100">
+                    <g class="symbol-svg" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M 35 60 Q 30 60, 25 65 T 15 70 H 10 L 15 75 L 10 80 H 15 Q 20 80, 25 75 T 40 65 M 65 60 Q 70 60, 75 65 T 85 70 H 90 L 85 75 L 90 80 H 85 Q 80 80, 75 75 T 60 65" />
+                    </g>
+                    <g class="fill-symbol-svg" fill="currentColor">
+                        <path d="M 50 75 L 25 50 A 1 1 0 0 1 50 25 A 1 1 0 0 1 75 50 Z" />
+                    </g>
+                </svg>
+                <span class="overview-group">
+                    <span class="goods-title">バッジアイコン</span>
+                </span>
+            </button>
+        </div>
+        <div>
+            <button class="goods-button">
+                <svg class="goods-symbol-svg" viewBox="0 0 100 100">
+                    <g class="symbol-svg" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M 30 30 A 1 1 0 0 1 70 30 H 65 A 1 1 0 0 0 35 30 Z M 20 30 H 80 V 90 H 20 Z M 50 75 L 35 60 A 1 1 0 0 1 50 45 A 1 1 0 0 1 65 60 Z" />
+                    </g>
+                </svg>
+                <span class="overview-group">
+                    <span class="goods-title">バッグアイコン</span>
+                </span>
+            </button>
+        </div>
+        <div>
+            <button class="goods-button">
+                <svg class="goods-symbol-svg" viewBox="0 0 100 100">
+                    <g class="symbol-svg" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M 75 40 V 80 H 25 V 40 H 32.5 M 57.5 40 H 62.5 M 25 45 H 75 M 50 75 L 40 65 A 1 1 0 0 1 50 55 A 1 1 0 0 1 60 65 Z M 35 45 L 25 25 L 45 15 L 60 45 M 60 45 L 65 35 L 75 40 L 72.5 45" />
+                    </g>
+                    <g class="fill-symbol-svg" fill="currentColor">
+                        <path d="M 64 34.5 L 74 14.5 L 86 20.5 L 76 40.5 Z" />
+                    </g>
+                </svg>
+                <span class="overview-group">
+                    <span class="goods-title">ポーチアイコン</span>
+                </span>
+            </button>
+        </div>
+    </div>-->
+    <footer>
+        <div class="footer-content">
+            <a class="external-link-a" href="https://x.com/pond_pastel_dev" title="X: @pond_pastel_dev" target="_blank" rel="nofollow noopener noreferrer">
+                <span>X: @pond_pastel_dev</span>
+                <svg viewBox="0 0 16 16" width="16" height="16">
+                    <title>外部リンクが開きます。</title>
+                    <g class="external-link-svg" fill="none" stroke="currentColor" stroke-width="1.2">
+                        <path d="M 8 3 H 13 V 8 M 13 3 L 7 9 M 8 5.5 H 4 Q 2 5.5, 2 7.5 V 11.5 Q 2 13.5, 4 13.5 H 8.5 Q 10.5 13.5, 10.5 11.5 V 7.5" />
+                    </g>
+                </svg>
+            </a>
+            <a href="https://pond-pastel.github.io/" title="ホームページ">
+                <span>ホームページ</span>
+            </a>
+            <a href="https://pond-pastel.github.io/privacy.html" title="プライバシーポリシー・免責事項">
+                <span>プライバシーポリシー・免責事項</span>
+            </a>
+        </div>
+    </footer>
+</body>
+</html>
