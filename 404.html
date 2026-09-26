@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>404エラー: Pond Pastel</title>
+    <style>
+        :root {
+            --bg-color: lightpink;
+            --ft-color: lightseagreen;
+            --hv-color: cadetblue;
+            background-color: var(--bg-color);
+            text-align: center;
+            color: var(--ft-color);
+            font-family: sans-serif;
+            user-select: none;
+            -webkit-user-select: none;
+        }
+
+        a {
+            color: var(--ft-color);
+            font-size: 1.2rem;
+            transition: color 500ms ease;
+            &:hover,
+            &:focus {
+                color: var(--hv-color);
+            }
+        }
+
+        button {
+            cursor: pointer;
+            font-size: 1em;
+            color: var(--bg-color);
+            background-color: var(--ft-color);
+            border: solid 2px white;
+            border-radius: 5px;
+            transition: background-color 500ms ease;
+            &:hover,
+            &:focus {
+                background-color: var(--hv-color);
+            }
+        }
+
+        .flex-center {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #toast {
+            background-color: var(--bg-color);
+            border-radius: 0 0 1em 1em;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1;
+            & > #toast-container {
+                display: grid;
+                grid-template-rows: 0fr;
+                transition: grid-template-rows 500ms ease;
+                & > #toast-content {
+                    overflow: scroll;
+                }
+            }
+            & > #toast-checkbox {
+                display: none;
+            }
+            &:not(:has(#toast-checkbox:checked)) > #toast-container {
+                visibility: hidden;
+            }
+            &:has(#toast-checkbox:checked) {
+                padding: 5px;
+                border: solid 3px var(--ft-color);
+                border-top: none;
+                & > #toast-container {
+                    grid-template-rows: 1fr;
+                }
+            }
+        }
+
+        #tank {
+            width: 100px;
+            height: 150px;
+            border: 2px solid var(--ft-color);
+            margin: 0;
+        }
+
+        #water {
+            width: 100px;
+            height: 150px;
+            position: relative;
+            bottom: 0;
+            background-color: lightblue;
+            pointer-events: none;
+        }
+
+        #faucet {
+            width: 10px;
+            height: 20px;
+            background-color: #888;
+            position: relative;
+            top: 140px;
+            left: 45px;
+            border-radius: 5px 5px 0 0;
+            pointer-events: none;
+        }
+
+        #flowing-water {
+            width: 10px;
+            height: 0;
+            background-color: lightblue;
+            position: relative;
+            top: 20px;
+            left: 0;
+        }
+
+        #cup {
+            margin-top: 20px;
+        }
+
+        #cup-svg {
+            position: relative;
+            top: 0;
+            left: 0;
+        }
+    </style>
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+</head>
+<body>
+    <div id="error-message">
+        <h1><button id="start-button" title="ミニゲームを遊ぶ">404</button>このページは存在しません。</h1>
+        <div>ページが変更、削除されたか準備中の可能性があります。</div>
+        <div>編集中の場合は時間を置いてから再度アクセスしていただくと表示されます。</div>
+        <div>また、URLにタイプミスがないかご確認ください。</div>
+        <p>
+            <a href="https://pond-pastel.github.io/index.html">ホームへ</a>
+        </p>
+    </div>
+    <div id="toast">
+        <input type="checkbox" id="toast-checkbox">
+        <div id="toast-container">
+            <div id="toast-content"></div>
+        </div>
+    </div>
+    <div id="water-game-content" style="display: none;">
+        <h2>ピッタリ404mlを目指すゲーム</h2>
+        <div class="flex-center">
+            <div id="tank">
+                <div id="water">
+                    <div id="faucet">
+                        <div id="flowing-water"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="flex-center" id="cup">
+            <svg id="cup-svg" width="100" height="150">
+                <rect id="cup-water" fill="lightblue" width="100" height="0" x="0" y="150" />
+                <path fill="lightpink" d="M 0 0 V 150 H 12 L 2 0 Z" />
+                <path fill="lightpink" d="M 100 0 V 150 H 88 L 98 0 Z" />
+                <path fill="none" stroke="lightseagreen" stroke-width="2" d="M 1 1 H 99 L 89 149 H 11 Z" />
+            </svg>
+        </div>
+        <div style="display: none;" id="water-result">
+            <div id="water-score">Score: 0ml</div>
+            <div id="water-status">Miss</div>
+            <p class="flex-center">
+                <button id="water-init-button">再挑戦</button>
+            </p>
+        </div>
+        <p>
+            <button id="water-description-button" title="説明">説明</button>
+        </p>
+        <p>
+            <button id="end-button" title="ゲームを終了">ゲームを終了</button>
+        </p>
+    </div>
+    <script>
+        let waterReady = true;
+        let isPour = false;
+        let pourStartTime = null;
+        const WATER_SIZE = 150;
+        const MAX_WATER_LEVEL = 500;
+        let waterLevel = 0;
+
+        function toast(m, b) {
+            const checkEle = document.getElementById("toast-checkbox");
+            const contentEle = document.getElementById("toast-content");
+            contentEle.innerHTML = "";
+            const text = m.split("\n");
+            for(let i = 0; i < text.length; i++) {
+                if(i > 0) {
+                    const br = document.createElement("br");
+                    contentEle.appendChild(br);
+                }
+                contentEle.append(text[i]);
+            }
+            checkEle.checked = true;
+            const buttonGroup = document.createElement("div");
+            buttonGroup.classList.add("flex-center");
+            if(b) {
+                b.forEach((t) => {
+                    const button = document.createElement("button");
+                    button.textContent = t[0];
+                    button.addEventListener("click", () => {
+                        closeToast();
+                        if(t.length > 1) {
+                            if(t.length > 2) {
+                                t[1](...t[2]);
+                            } else {
+                                t[1]();
+                            }
+                        }
+                    });
+                    buttonGroup.appendChild(button);
+                });
+            } else {
+                const button = document.createElement("button");
+                button.textContent = "とじる";
+                button.addEventListener("click", () => {
+                    closeToast();
+                });
+                buttonGroup.appendChild(button);
+            }
+            contentEle.appendChild(buttonGroup);
+        }
+
+        function closeToast() {
+            const checkEle = document.getElementById("toast-checkbox");
+            checkEle.checked = false;
+        }
+
+        function start() {
+            const errorMessageEle = document.getElementById("error-message");
+            errorMessageEle.style.display = "none";
+            const waterEle = document.getElementById("water-game-content");
+            waterEle.style.display = null;
+        }
+
+        function pourStart() {
+            if(waterReady) {
+                isPour = true;
+                const flowingWaterEle = document.getElementById("flowing-water");
+                flowingWaterEle.style.height = "160px";
+                requestAnimationFrame(pourWater);
+                waterReady = false;
+            }
+        }
+
+        function pourWater(timestamp) {
+            const speed = 2;
+            waterLevel += speed;
+            pourStartTime = timestamp;
+            if(isPour) {
+                const waterEle = document.getElementById("water");
+                const size = ((MAX_WATER_LEVEL - waterLevel) / MAX_WATER_LEVEL) * WATER_SIZE;
+                waterEle.style.height = `${size}px`;
+                waterEle.style.top = `${WATER_SIZE - size}px`;
+                const faucetEle = document.getElementById("faucet");
+                faucetEle.style.top = `${size - 10}px`;
+                const cupWaterEle = document.getElementById("cup-water");
+                cupWaterEle.setAttribute("height", WATER_SIZE - size);
+                cupWaterEle.setAttribute("y", size);
+                requestAnimationFrame(pourWater);
+            }
+            if(waterLevel >= MAX_WATER_LEVEL) {
+                pourEnd();
+            }
+        }
+
+        function pourEnd() {
+            if(isPour) {
+                const flowingWaterEle = document.getElementById("flowing-water");
+                flowingWaterEle.style.height = "0";
+                const scoreEle = document.getElementById("water-score");
+                scoreEle.textContent = `Score: ${waterLevel}ml`;
+                const statusEle = document.getElementById("water-status");
+                if(waterLevel === 404) {
+                    statusEle.textContent = "Perfect!";
+                } else {
+                    statusEle.textContent = "Miss";
+                }
+                const resultEle = document.getElementById("water-result");
+                resultEle.style.display = null;
+                isPour = false;
+                pourStartTime = null;
+                waterLevel = 0;
+            }
+        }
+
+        function pourInit() {
+            waterReady = true;
+            const resultEle = document.getElementById("water-result");
+            resultEle.style.display = "none";
+            const waterEle = document.getElementById("water");
+            waterEle.style.height = `${WATER_SIZE}px`;
+            waterEle.style.top = "0";
+            const faucetEle = document.getElementById("faucet");
+            faucetEle.style.top = null;
+            const cupWaterEle = document.getElementById("cup-water");
+            cupWaterEle.setAttribute("height", 0);
+            cupWaterEle.setAttribute("y", WATER_SIZE);
+        }
+
+        function end() {
+            const errorMessageEle = document.getElementById("error-message");
+            errorMessageEle.style.display = null;
+            const waterEle = document.getElementById("water-game-content");
+            waterEle.style.display = "none";
+            pourInit();
+        }
+
+        window.onload = function() {
+            const startButtonEle = document.getElementById("start-button");
+            startButtonEle.addEventListener("click", () => {
+                start();
+            });
+            const endButtonEle = document.getElementById("end-button");
+            endButtonEle.addEventListener("click", () => {
+                end();
+            });
+            const waterDescriptionButtonEle = document.getElementById("water-description-button");
+            waterDescriptionButtonEle.addEventListener("click", () => {
+                toast("ピッタリ404mlを目指すゲームです。\nタンクには500mlの水が入っています。\nタンクをタップするかPキーを押して水を入れ、離したら判定されます。\n水は多すぎても少なくてもダメ。", [["OK"]]);
+            });
+            const tankEle = document.getElementById("tank");
+            tankEle.addEventListener("pointerdown", () => {
+                pourStart();
+            });
+            const waterInitButtonEle = document.getElementById("water-init-button");
+            waterInitButtonEle.addEventListener("click", () => {
+                pourInit();
+            });
+            document.addEventListener("pointerup", () => {
+                pourEnd();
+            });
+            document.addEventListener("keydown", (e) => {
+                if(e.key === "p" || e.key === "P") {
+                    pourStart();
+                }
+            });
+            document.addEventListener("keyup", (e) => {
+                if(e.key === "p" || e.key === "P") {
+                    pourEnd();
+                }
+            });
+        }
+    </script>
+</body>
+</html>
